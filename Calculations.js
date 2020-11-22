@@ -205,6 +205,12 @@ function getMaxShear(nodeNum){
     return Math.max(...shearMagnitudeByZIndex) > Math.abs(Math.min(...shearMagnitudeByZIndex)) ? Math.max(...shearMagnitudeByZIndex) : Math.min(...shearMagnitudeByZIndex);
 }
 
+// CONSTANTS
+// member thickness in mm 
+const memberThickness = 1.5875;
+// dowel area in m^2
+const dowelArea = Math.PI * (361/160000)**2;
+
 // FUNCTION TO GET MAX MOMENT ON A SINGLE DOWEL(NODE)
 
 function getMaxMoment(nodeNum){
@@ -245,12 +251,46 @@ function getMaxMoment(nodeNum){
     for(let i = 0; i < momentYByZIndex.length; i++){
         momentMagnitudeByZIndex.push(Math.sqrt(Math.pow(momentXByZIndex[i], 2) + Math.pow(momentYByZIndex[i], 2)));
     }
-    return Math.max(...momentMagnitudeByZIndex) > Math.abs(Math.min(...momentMagnitudeByZIndex)) ? Math.max(...momentMagnitudeByZIndex) : Math.min(...momentMagnitudeByZIndex);
+    return Math.max(...momentMagnitudeByZIndex) > Math.abs(Math.min(...momentMagnitudeByZIndex)) ? Math.max(...momentMagnitudeByZIndex)*memberThickness : Math.min(...momentMagnitudeByZIndex)*memberThickness;
+}
+function findMemberAngles(){
+    const memberAngles = [];
+    for(let i = 0; i < members.length; i++){
+        const deltaY = nodeData[members[i].node2].y - nodeData[members[i].node1].y;
+        const deltaX = nodeData[members[i].node2].x - nodeData[members[i].node1].x;
+        if(Math.atan(deltaY/deltaX)*180/Math.PI > 0)
+            memberAngles.push(Math.atan(deltaY/deltaX)*180/Math.PI);
+        else if(deltaY === 0){
+            memberAngles.push(0);
+        }
+        else if(deltaX === 0){
+            memberAngles.push(90);
+        }
+        else{
+            memberAngles.push(180 + Math.atan(deltaY/deltaX)*180/Math.PI);
+        }
+    }
+    return memberAngles;
+}
+
+// EXAMPLES FOR FUNCTION EXECUTION
+// console.log(getForces(0));
+// console.log(getDowelLength(0));
+// console.log(getMaxShear(0));
+// console.log(getMaxMoment(0));
+
+function findAll(){
+    let dowelLength = 0;
+    for(let i = 0; i < nodeData.length; i++){
+        console.log("max shear force on node " + i + " is: " + getMaxShear(i) + " N");
+        console.log("max moment on node " + i + " is: " + getMaxMoment(i) + " Nxmm");
+        console.log("max shear stress on node " + i + " is: " + (getMaxShear(i)/dowelArea)/(10**6) + " MPa")
+        dowelLength += getDowelLength(i);
+    }
+    console.log("total dowel length: " + dowelLength*memberThickness + " mm");
+    console.log("total dowel mass: " + (dowelLength*memberThickness/10)*dowelArea*10000*0.747 + " g");
+    console.log(findMemberAngles());
 }
 
 
-// EXAMPLES FOR FUNCTION EXECUTION
-console.log(getForces(0));
-console.log(getDowelLength(0));
-console.log(getMaxShear(0));
-console.log(getMaxMoment(0));
+findAll();
