@@ -4,7 +4,7 @@
 clear all, clc;
 
 % Knowns
-P = 17;
+P = -17;
 E = 10.392e+09;
 A = 0.01524*0.001588;
 L = [0.05; 0.07; 0.16; 0.15; 0.11; 0.16; 0.11; 0.16; 0.07]; %L array is hand calculated befrore simulation.
@@ -62,6 +62,39 @@ u = [K(2, 2), K(2, 5:12); K(5,2), K(5, 5:12); K(6, 2), K(6, 5:12); K(7, 2), K(7,
 U = [0; u(1); 0; 0; u(2); u(3); u(4); u(5); u(6); u(7); u(8); u(9)];
 
 F = K * U;
+
+Fe = zeros(9, 1);
+
+for i=1:9
+    Fe(i) = k(i)*((U((n{i}(2)+1)*2-1)-U((n{i}(1)+1)*2-1))*C(i)+(U((n{i}(2)+1)*2)-U((n{i}(1)+1)*2))*S(i))
+end
+
+fprintf('Nodal Displacements:\n');
+j = 1;
+for i = 1:2:length(U)
+    fprintf('u%ix = %.9f m\n', j, U(i));
+    fprintf('u%iy = %.9f m\n', j, U(i+1));
+    j = j+1;
+end
+
+fprintf('\nNodal Forces:\n');
+j = 1;
+for i = 1:2:length(F)
+    fprintf('f%ix = %.3f N\n', j, F(i));
+    fprintf('f%iy = %.3f N\n', j, F(i+1));
+    j = j+1;
+end
+
+fprintf('\nMember Forces:\n');
+for i = 1:length(Fe)
+    fprintf('f(%i) = %.3f N\n', i, Fe(i));
+end
+
+
+% % Solve member forces
+% fe1 = k(1) * ((U(3)-U(1))*C(1) + (U(4)-U(2))*S(1));
+% fe2 = k(2) * ((U(5)-U(3))*C(2) + (U(6)-U(4))*S(2));
+% fe3 = k(3) * ((U(5)-U(2))*C(3) + (U(6)-U(1))*S(3));
 
 % u = [K(3,3), K(3,5:6); K(5,3), K(5,5:6); K(6,3), K(6,5:6)] \ [0; P; 0];
 % t = zeroes(18);
