@@ -3,7 +3,7 @@ const nodeData = [
     {
         x:0,
         y:0,
-        forceExternalX: 594.486,
+        forceExternalX: 58.86,
         forceExternalY: 0,
         externalForceType: 'roller'
     },
@@ -11,14 +11,14 @@ const nodeData = [
         x:0.3,
         y:0,
         forceExternalX: 0,
-        forceExternalY: -99.081,
+        forceExternalY: -9.81,
         externalForceType: 'load'
     },
     {
         x:0,
         y:0.05,
-        forceExternalX: -594.486,
-        forceExternalY: 99.081,
+        forceExternalX: -58.86,
+        forceExternalY: 9.81,
         externalForceType: 'pin'
     },
     {
@@ -50,55 +50,55 @@ const members = [
     {
         node1: 0,
         node2: 2,
-        force: 99.081,
+        force: 9.81,
         zIndex: 0
     },
     {
         node1: 0,
         node2: 3,
-        force: -396.324,
+        force: -39.24,
         zIndex: 2
     },
     {
         node1: 4,
         node2: 3,
-        force: -140.122,
+        force: -13.873,
         zIndex: 1
     },
     {
         node1: 4,
         node2: 1,
-        force: 140.122,
+        force: 13.873,
         zIndex: 0
     },
     {
         node1: 1,
         node2: 3,
-        force: -99.081,
+        force: -9.81,
         zIndex: 3
     },
     {
         node1: 5,
         node2: 0,
-        force: -221.552,
+        force: -21.936,
         zIndex: 1
     },
     {
         node1: 5,
         node2: 3,
-        force: 221.552,
+        force: 21.936,
         zIndex: 0
     },
     {
         node1: 2,
         node2: 5,
-        force: 594.486,
+        force: 58.86,
         zIndex: 2
     },
     {
         node1: 5,
         node2: 4,
-        force: 198.162,
+        force: 19.62,
         zIndex: 3
     }
 ];
